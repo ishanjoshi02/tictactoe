@@ -111,14 +111,18 @@ public class Game implements ActionListener {
     }
 
     void exitProtocol() {
-        //todo Rewrite Exit Protocol
+        
         JPanel panel = new JPanel();
         JTextArea textArea = new JTextArea(currentPlayer.getName() + " Wins");
+        
         textArea.setSize(new Dimension(400, 400));
         textArea.setBackground(Color.WHITE);
+        
         mFrame.remove(mPanel);
+        
         panel.setLayout(new FlowLayout());
         panel.add(textArea);
         mFrame.add(panel);
+        
     }
 }
