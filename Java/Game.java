@@ -14,14 +14,14 @@ public class Game implements ActionListener {
     Player currentPlayer;
     Game() {
         //Initialising UI Components
-        mFrame = new JFrame();
+        mFrame = new JFrame("Tic Tac Toe");
         mPanel = new JPanel(new GridLayout(3,3));
         mButtons = new JButton[9];
         for (int i = 0;i < 9;i++) {
             mButtons[i] = new JButton("");
             mButtons[i].setBackground(Color.WHITE);
             mButtons[i].addActionListener(this);
-            mButtons[i].setFont(new Font("Roboto", 24, 24));
+            mButtons[i].setFont(new Font("Roboto", 72, 72));
             mPanel.add(mButtons[i]);
         }
 
@@ -53,8 +53,8 @@ public class Game implements ActionListener {
 
             array[index / 3][index % 3] = currentSymbol;
 
-            swapPlayers();
             Logic();
+            swapPlayers();
         }
     }
 
@@ -66,23 +66,41 @@ public class Game implements ActionListener {
     }
 
     void Logic() {
-        //Game Logic goes here
         //Traversing Across
+
         int count;
         String symbol;
         for (int i = 0;i < 3;i++) {
             count = 0;
             symbol = array[i][0];
             for (int j = 1;j < 3;j++) {
-                if (array[i][j] != symbol)
-                    continue;
-                else
+                if (array[i][j] == symbol)
                     count++;
             }
-
-            if (count >= 2)
-                System.out.print(true);
+            if (count == 2 && !symbol.equals("")){
+                exitProtocol();
+            }
         }
+
+        //Traversing Down
+
+        for (int i = 0;i < 3;i++) {
+            count = 0;
+            symbol = array[0][i];
+            for (int j = 1;j < 3;j++) {
+                if (array[j][i] == symbol)
+                    count++;
+            }
+            if (count == 2 && !symbol.equals("")){
+                exitProtocol();
+            }
+        }
+
+        //Traversing Diagonally
+        if (array[0][0]==array[1][1] && array[0][0]==array[2][2] && array[0][0]!="")
+            exitProtocol();
+        if (array[0][2]==array[1][1] && array[1][1]==array[2][0] && array[0][2]!="")
+            exitProtocol();
     }
 
     int getButtonIndex(JButton currentButton) {
@@ -90,5 +108,17 @@ public class Game implements ActionListener {
             if (currentButton.equals(mButtons[i]))
                 return i;
         return -1;
+    }
+
+    void exitProtocol() {
+        //todo Rewrite Exit Protocol
+        JPanel panel = new JPanel();
+        JTextArea textArea = new JTextArea(currentPlayer.getName() + " Wins");
+        textArea.setSize(new Dimension(400, 400));
+        textArea.setBackground(Color.WHITE);
+        mFrame.remove(mPanel);
+        panel.setLayout(new FlowLayout());
+        panel.add(textArea);
+        mFrame.add(panel);
     }
 }
